@@ -67,3 +67,24 @@ jobs:
       #     DB_USERNAME: root
       #     DB_PASSWORD: root
       #   run: vendor/bin/phpunit
+
+      # - name: Afficher les journaux Laravel en cas d'échec
+      #   if: failure()
+      #   run: cat storage/logs/laravel.log
+
+      deploy:
+        needs: laravel-tests
+        runs-on: ubuntu-latest
+
+        steps:
+          - uses: actions/checkout@v2
+
+          - name: Setup SSH
+            uses: webfactory/ssh-agent@v0.5.3
+            with:
+              ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          - name: Deploy to Server
+            run: |
+              ssh -o StrictHostKeyChecking=no root@srv482573.hstgr.cloud 'cd /var/www/orioll.com/public_html && git pull origin main && composer install --no-interaction --prefer-dist --optimize-autoloader && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && sudo systemctl restart php8.2-fpm'
+
