@@ -82,4 +82,13 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -o StrictHostKeyChecking=no root@srv482573.hstgr.cloud 'cd /var/www/orioll.com/public_html && git pull origin main && composer install --no-interaction --prefer-dist --optimize-autoloader && php artisan migrate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && sudo systemctl restart php8.2-fpm'
+          ssh -o StrictHostKeyChecking=no root@srv482573.hstgr.cloud '
+            cd /var/www/orioll.com/public_html &&
+            git config --global --add safe.directory /var/www/orioll.com/public_html &&
+            git pull origin main &&
+            composer install --no-interaction --prefer-dist --optimize-autoloader &&
+            php artisan migrate --force &&
+            php artisan config:cache &&
+            php artisan route:cache &&
+            php artisan view:cache &&
+            sudo systemctl restart php8.2-fpm'
