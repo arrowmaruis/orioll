@@ -82,7 +82,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh -o StrictHostKeyChecking=no root@srv482573.hstgr.cloud '
+          ssh -o StrictHostKeyChecking=no root@srv482573.hstgr.cloud'
             cd /var/www/orioll.com/public_html &&
             git config --global --add safe.directory /var/www/orioll.com/public_html &&
             git pull origin main &&
